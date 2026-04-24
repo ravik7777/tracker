@@ -48,6 +48,14 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=
 
 See `SETUP.md` for how to obtain these from the Supabase dashboard.
 
+## Workflow
+
+After every change to the app, create a git commit immediately so any state can be rolled back:
+
+```bash
+git add -A && git commit -m "<short description of change>"
+```
+
 ## Key Documents
 - `trackerprompt.md` — Original project specification (Russian)
 - `PROJECT.md` — Detailed architecture, DB schema, file structure, implementation plan
