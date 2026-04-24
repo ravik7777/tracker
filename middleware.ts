@@ -26,14 +26,21 @@ export async function middleware(request: NextRequest) {
   const { data: { user } } = await supabase.auth.getUser()
 
   const { pathname } = request.nextUrl
-  const isPublic = pathname.startsWith('/login') || pathname.startsWith('/register')
+  // Auth callback must always pass through so the code can be exchanged
+  if (pathname.startsWith('/auth/callback')) return supabaseResponse
 
-  if (!user && !isPublic) {
+  const isPublic =
+    pathname.startsWith('/login') ||
+    pathname.startsWith('/register') ||
+    pathname.startsWith('/forgot-password')
+
+  if (!user && !isPublic && !pathname.startsWith('/reset-password')) {
     const url = request.nextUrl.clone()
     url.pathname = '/login'
     return NextResponse.redirect(url)
   }
 
+  // Redirect authenticated users away from auth pages, but NOT from /reset-password
   if (user && isPublic) {
     const url = request.nextUrl.clone()
     url.pathname = '/dashboard'
